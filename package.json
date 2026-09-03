@@ -1,0 +1,21 @@
+{
+  "name": "sale-rent",
+  "version": "0.0.0",
+  "description": "This is a project for sale and rent management.",
+  "private": true,
+  "author": "JIMIN",
+  "license": "ISC",
+  "type": "module",
+  "engines": {
+    "node": ">=23"
+  },
+  "scripts": {},
+  "packageManager": "pnpm@11.25.0",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "11.25.0",
+      "onFail": "download"
+    }
+  }
+}
