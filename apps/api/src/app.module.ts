@@ -3,7 +3,10 @@ import { createObserveModule } from '@nestjs/observe';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { fileURLToPath } from 'url';
 import * as path from 'path';
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export const { ObserveModule, ObserveInstrument } = createObserveModule();
 
@@ -11,7 +14,7 @@ export const { ObserveModule, ObserveInstrument } = createObserveModule();
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: [path.resolve(process.cwd(), '.env')],
+      envFilePath: [path.resolve(__dirname, '../../../.env')],
     }),
 
     // Distributed tracing, auto-correlated logs, request/job metrics, error
