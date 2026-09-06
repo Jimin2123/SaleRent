@@ -1,0 +1,10 @@
+enum OAuthProvider {
+  GOOGLE
+  KAKAO
+  NAVER
+}
+
+enum VerificationTokenType {
+  EMAIL_VERIFICATION // 이메일 인증
+  PASSWORD_RESET // 비밀번호 재설정
+}

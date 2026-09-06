@@ -1,0 +1,23 @@
+model RefreshToken {
+  id        String  @id @default(cuid())
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade)
+
+  // rotation 체인(같은 로그인 세션)을 묶는 식별자. 로그인 시 새로 발급되고,
+  // rotate될 때마다 이전 row의 familyId를 그대로 이어받는다.
+  // 이미 revoke된 토큰이 재사용되면 이 familyId 전체를 revoke한다 (reuse detection).
+  familyId String @default(cuid())
+
+  tokenHash String    @unique // 원문 미저장, SHA-256 해시만 보관
+  expiresAt DateTime
+  revokedAt DateTime? // null = 유효, not null = 무효화됨
+
+  userAgent String? // 기기/브라우저 식별
+  ipAddress String? // 로그인 IP
+
+  createdAt DateTime @default(now())
+
+  @@index([accountId])
+  @@index([accountId, revokedAt])
+  @@index([familyId, revokedAt])
+}
