@@ -1,0 +1,22 @@
+// 사업자 등록 정보.
+// 내 사업장(Organization)과 거래처(BusinessPartner)가 같은 구조를 공유하며, 각각 1:1로 하나씩 가진다.
+model BusinessProfile {
+  id String @id @default(uuid())
+
+  name                   String // 상호
+  businessRegistrationNo String // 사업자등록번호
+  representativeName     String // 대표자명
+  businessType           String? // 업태
+  businessItem           String? // 종목
+  email                  String? // 대표 이메일
+  phone                  String? // 대표 전화번호
+
+  addressId String  @unique // 사업장 소재지
+  address   Address @relation(fields: [addressId], references: [id], onDelete: Restrict) // 참조 중인 주소는 지울 수 없다
+
+  organization    Organization? // 이 정보를 쓰는 내 사업장 (거래처인 경우 null)
+  businessPartner BusinessPartner? // 이 정보를 쓰는 거래처 (내 사업장인 경우 null)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

@@ -1,0 +1,16 @@
+// 메일로 보내는 일회성 토큰.
+// 이메일 인증과 비밀번호 재설정에 함께 쓰이며, type으로 용도를 구분한다.
+model VerificationToken {
+  id    String                @id @default(uuid())
+  token String                @unique // 원문 미저장, SHA-256 해시만 보관
+  type  VerificationTokenType // 토큰 용도 (이메일 인증 / 비밀번호 재설정)
+
+  accountId String
+  account   Account @relation(fields: [accountId], references: [id], onDelete: Cascade) // 계정을 지우면 토큰도 함께 사라진다
+
+  expiresAt DateTime // 만료 시각
+  usedAt    DateTime? // 사용 처리된 시각. null이 아니면 다시 쓸 수 없다
+  createdAt DateTime  @default(now())
+
+  @@index([accountId])
+}

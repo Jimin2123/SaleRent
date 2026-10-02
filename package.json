@@ -1,0 +1,29 @@
+{
+  "name": "sale-rent",
+  "version": "0.0.0",
+  "description": "This is a project for sale and rent management.",
+  "private": true,
+  "author": "JIMIN",
+  "license": "ISC",
+  "type": "module",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "lint": "oxlint",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
+  },
+  "packageManager": "pnpm@12.3.4+sha512.961aa41fb077da3a04a441d9f8e15ebc0c96da8ef710b2eb67bf9ee7cb0610eabd48f1fd85f51cffe73846785fa0f87c56a3a872a1d893f8446741b5cce45457",
+  "devEngines": {
+    "packageManager": {
+      "name": "pnpm",
+      "version": "12.3.4",
+      "onFail": "download"
+    }
+  },
+  "devDependencies": {
+    "oxlint": "^1.81.0",
+    "prettier": "^3.9.6"
+  }
+}

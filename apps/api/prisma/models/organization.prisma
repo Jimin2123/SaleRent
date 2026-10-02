@@ -1,0 +1,17 @@
+// 내 사업장. 거래처·구성원 등 모든 업무 데이터가 매달리는 테넌트 단위다.
+model Organization {
+  id String @id @default(uuid())
+
+  memo String? // 사업장에 대한 내부 메모
+
+  businessProfileId String          @unique // 이 사업장의 사업자 등록 정보
+  businessProfile   BusinessProfile @relation(fields: [businessProfileId], references: [id], onDelete: Restrict) // 사업장이 남아 있는 한 사업자 정보를 지울 수 없다
+
+  businessPartners        BusinessPartner[] // 이 사업장이 관리하는 거래처
+  businessPartnerContacts BusinessPartnerContact[] // 이 사업장이 관리하는 거래처 담당자
+  organizationMembers     OrganizationMember[] // 이 사업장에 속한 구성원
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime? // 소프트 삭제 시각. null이면 유효한 사업장
+}

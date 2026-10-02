@@ -1,0 +1,26 @@
+// 거래처 담당자.
+// 거래처와 사업장을 함께 참조해, 다른 사업장의 거래처에 담당자가 붙는 일을 스키마 차원에서 막는다.
+model BusinessPartnerContact {
+  id String @id @default(uuid())
+
+  isPrimary  Boolean @default(false) // 대표 담당자 여부. 연락처 표시·기본 선택에 쓴다
+  name       String? // 담당자명
+  department String? // 부서
+  position   String? // 직급/직책
+  role       String? // 담당 업무 (발주·정산 등)
+  phone      String? // 연락처
+  email      String? // 이메일
+  memo       String? // 담당자에 대한 내부 메모
+
+  organizationId String // 이 담당자를 관리하는 내 사업장
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Restrict) // 담당자가 남아 있는 한 사업장을 지울 수 없다
+
+  businessPartnerId String // 담당자가 속한 거래처
+  // 거래처를 (id, organizationId) 복합 키로 참조한다 — organizationId를 공유하므로 거래처와 담당자의 사업장이 항상 일치한다
+  businessPartner   BusinessPartner @relation(fields: [businessPartnerId, organizationId], references: [id, organizationId], onDelete: Restrict)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([id, organizationId]) // 다른 테이블이 사업장과 묶어 참조할 수 있게 하는 복합 키
+}

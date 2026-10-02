@@ -1,0 +1,24 @@
+// 로그인 자격 증명.
+// User 1명당 최대 1개이며, 이메일/비밀번호 로그인과 소셜 로그인이 모두 이 계정을 통과한다.
+model Account {
+  id String @id @default(uuid())
+
+  email        String? @unique // 로그인 ID로 쓰이는 이메일
+  passwordHash String? // bcrypt 해시. 소셜 전용 가입자는 null이므로 비교 전에 반드시 null을 먼저 걸러낸다
+
+  isActive        Boolean   @default(true) // false = 관리자에 의한 정지. 이메일 인증 여부와는 무관하다
+  emailVerifiedAt DateTime? // 이메일 인증을 마친 시각. null이면 미인증
+  lastLoginAt     DateTime? // 마지막 로그인 성공 시각
+
+  userId String @unique // 이 계정의 소유자
+  user   User   @relation(fields: [userId], references: [id], onDelete: Restrict) // 계정이 남아 있는 한 사용자를 지울 수 없다
+
+  identities         AccountIdentity[] // 이 계정에 연결된 소셜 로그인 정보
+  passwordHistories  PasswordHistory[] // 비밀번호 재사용 검사에 쓰는 변경 이력
+  refreshTokens      RefreshToken[] // 발급된 리프레시 토큰 (로그인 세션)
+  verificationTokens VerificationToken[] // 이메일 인증·비밀번호 재설정용 일회성 토큰
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime? // 소프트 삭제 시각. null이면 유효한 계정
+}

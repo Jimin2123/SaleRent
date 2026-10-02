@@ -1,0 +1,14 @@
+// 서비스 이용자 본인.
+// 로그인 수단(Account)과 사업장에서의 신분(OrganizationMember)이 모두 이 모델을 기준으로 연결된다.
+model User {
+  id String @id @default(uuid())
+
+  type UserType @default(PERSONAL) // 회원 유형 (개인/사업자)
+
+  account             Account? // 이 사용자의 로그인 수단 (1:1)
+  organizationMembers OrganizationMember[] // 이 사용자가 소속된 사업장별 구성원 정보
+
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime? // 소프트 삭제 시각. null이면 유효한 사용자
+}

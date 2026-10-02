@@ -1,0 +1,32 @@
+/// 소셜 로그인 제공자
+enum OAuthProvider {
+  GOOGLE /// 구글
+  KAKAO /// 카카오
+  NAVER /// 네이버
+}
+
+/// 메일로 발송되는 일회성 토큰의 용도
+enum VerificationTokenType {
+  EMAIL_VERIFICATION /// 가입 시 이메일 소유 확인
+  PASSWORD_RESET /// 비밀번호 재설정
+}
+
+/// 회원 유형 (가입 시 결정)
+enum UserType {
+  BUSINESS /// 사업자 회원
+  PERSONAL /// 개인 회원
+}
+
+/// 거래처와의 거래 방향
+enum BusinessPartnerType {
+  CUSTOMER /// 매출처 (우리가 판매하는 대상)
+  SUPPLIER /// 매입처 (우리가 구매하는 대상)
+  BOTH /// 매입·매출이 모두 발생하는 거래처
+}
+
+/// 사업장 안에서의 구성원 권한 등급
+enum OrganizationRole {
+  OWNER /// 사업장 소유자 (사업자 본인)
+  ADMIN /// 관리자
+  STAFF /// 일반 직원
+}
