@@ -1,0 +1,17 @@
+// 주소 값 객체.
+// 우편번호 검색 API 응답 필드를 그대로 보관해, 나중에 도로명/지번 어느 쪽이든 다시 보여줄 수 있게 한다.
+model Address {
+  id String @id @default(uuid())
+
+  zonecode      String // 우편번호 (5자리)
+  address       String // 검색 결과에서 사용자가 선택한 기본 주소
+  addressDetail String? // 사용자가 직접 입력한 상세 주소 (동·호수 등)
+  jibunAddress  String? // 지번 주소 원본
+  roadAddress   String? // 도로명 주소 원본
+  buildingName  String? // 건물명
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  businessProfile BusinessProfile? // 이 주소를 쓰는 사업자 정보 (1:1)
+}
