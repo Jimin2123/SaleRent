@@ -1,0 +1,56 @@
+enum AuthProvider {
+  LOCAL
+  GOOGLE
+  KAKAO
+  NAVER
+
+  @@map("auth_provider")
+}
+
+enum UserStatus {
+  ACTIVE
+  SUSPENDED
+  WITHDRAWN
+
+  @@map("user_status")
+}
+
+enum CompanyType {
+  INDIVIDUAL // 개인사업자
+  CORPORATION // 법인사업자
+
+  @@map("company_type")
+}
+
+enum CompanyStatus {
+  ACTIVE
+  SUSPENDED
+  CLOSED
+
+  @@map("company_status")
+}
+
+enum MemberRole {
+  OWNER
+  MANAGER
+  STAFF
+
+  @@map("member_role")
+}
+
+enum MemberStatus {
+  ACTIVE
+  SUSPENDED
+  LEFT
+
+  @@map("member_status")
+}
+
+enum InvitationStatus {
+  PENDING
+  ACCEPTED
+  EXPIRED
+  CANCELED
+
+  @@map("invitation_status")
+}

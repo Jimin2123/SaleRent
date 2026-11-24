@@ -1,0 +1,32 @@
+// 서비스에 가입한 사업자
+model Company {
+  id String @id @default(uuid()) @db.Uuid
+
+  name                   String        @db.VarChar(100) // 상호
+  companyType            CompanyType   @map("company_type")
+  businessRegistrationNo String        @map("biz_reg_no") @db.VarChar(10) // 사업자등록번호
+  representativeName     String        @map("representative_name") @db.VarChar(50) // 대표자명
+  businessType           String?       @map("business_type") @db.VarChar(20) // 업태
+  businessItem           String?       @map("business_item") @db.VarChar(20) // 종목
+  phone                  String?       @db.VarChar(20) // 대표 전화번호
+  status                 CompanyStatus @default(ACTIVE)
+
+  zonecode      String  @db.VarChar(5) // 우편번호
+  address       String  @db.VarChar(255) // 기본 주소
+  addressDetail String? @map("address_detail") @db.VarChar(255) // 상세 주소 
+  jibunAddress  String? @map("jibun_address") @db.VarChar(255) // 지번 주소
+  roadAddress   String? @map("road_address") @db.VarChar(255) // 도로명 주소
+  buildingName  String? @map("building_name") @db.VarChar(100) // 건물명
+
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+  // 국세청 조회 등으로 사업자 인증된 시각. 인증된 번호만 중복 금지 (raw SQL 부분 UNIQUE)
+  bizVerifiedAt DateTime? @map("biz_verified_at") @db.Timestamptz(6)
+
+  companyInvitations CompanyInvitation[]
+  companyMembers     CompanyMember[]
+
+  @@index([name], map: "idx_companies_name")
+  @@index([businessRegistrationNo], map: "idx_companies_biz_reg_no")
+  @@map("companies")
+}

@@ -1,0 +1,18 @@
+model User {
+  id String @id @default(uuid()) @db.Uuid
+
+  name   String     @db.VarChar(50) // 이름
+  email  String?    @db.VarChar(255) // 이메일
+  phone  String?    @db.VarChar(20) // 전화번호
+  status UserStatus @default(ACTIVE)
+
+  withdrawnAt DateTime? @map("withdrawn_at") @db.Timestamptz(6)
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  accounts            Account[]
+  memberships         CompanyMember[]
+  acceptedInvitations CompanyInvitation[] @relation("invitation_invited_by")
+
+  @@map("users")
+}

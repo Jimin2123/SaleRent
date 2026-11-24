@@ -1,0 +1,21 @@
+model Account {
+  id String @id @default(uuid()) @db.Uuid
+
+  provider       AuthProvider
+  providerUserId String       @map("provider_user_id") @db.VarChar(255)
+  passwordHash   String?      @map("password_hash") @db.VarChar(255) // LOCAL 전용
+
+  userId String @map("user_id") @db.Uuid
+  user   User   @relation(fields: [userId], references: [id], onDelete: Restrict)
+
+  linkedAt    DateTime  @default(now()) @map("linked_at") @db.Timestamptz(6)
+  lastLoginAt DateTime? @map("last_login_at") @db.Timestamptz(6)
+  createdAt   DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt   DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  // 같은 제공자의 같은 계정은 시스템에 하나만
+  @@unique([provider, providerUserId], map: "uk_accounts_provider_user")
+  // 한 사용자는 제공자별로 하나만 (user_id 조회 인덱스 역할도 겸함)
+  @@unique([userId, provider], map: "uk_accounts_user_provider")
+  @@map("accounts")
+}
