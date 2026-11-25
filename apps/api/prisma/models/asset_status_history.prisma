@@ -10,17 +10,22 @@ model AssetStatusHistory {
   // 계약·주문 id 등 (sourceType에 따라 대상 테이블이 달라 FK 없음)
   sourceId      String?           @map("source_id") @db.Uuid
   // 정정(취소)일 때 취소 대상 이력 id
-  revertsId     String?           @unique(map: "uk_asset_status_histories_reverts") @map("reverts_id") @db.Uuid
+  revertsId     String?           @map("reverts_id") @db.Uuid
   actorMemberId String            @map("actor_member_id") @db.Uuid
   companyId     String            @map("company_id") @db.Uuid
   createdAt     DateTime          @default(now()) @map("created_at") @db.Timestamptz(6)
 
   assetId     String              @map("asset_id") @db.Uuid
   asset       Asset               @relation(fields: [assetId, companyId], references: [id, companyId], onDelete: Restrict, onUpdate: Restrict, map: "fk_asset_status_histories_asset")
-  reverts     AssetStatusHistory? @relation("HistoryRevert", fields: [revertsId], references: [id], onDelete: Restrict)
+  // 같은 자산의 이력만 정정 대상으로 지정 가능 (다른 사업자·다른 자산 이력 참조 방지)
+  reverts     AssetStatusHistory? @relation("HistoryRevert", fields: [revertsId, assetId], references: [id, assetId], onDelete: Restrict, onUpdate: Restrict, map: "fk_asset_status_histories_reverts")
   revertedBy  AssetStatusHistory? @relation("HistoryRevert")
   actorMember CompanyMember       @relation(fields: [actorMemberId, companyId], references: [id, companyId], onDelete: Restrict, onUpdate: Restrict, map: "fk_asset_status_histories_actor")
 
+  // 복합 FK 대상 (정정 이력이 같은 자산의 이력만 가리키도록)
+  @@unique([id, assetId], map: "uk_asset_status_histories_id_asset")
+  // 한 이력은 한 번만 정정 가능. assetId는 FK로 대상 이력의 자산과 같으므로 reverts_id 단독 UNIQUE와 같은 의미
+  @@unique([revertsId, assetId], map: "uk_asset_status_histories_reverts")
   @@index([actorMemberId], map: "idx_asset_status_histories_actor")
   @@index([assetId, createdAt], map: "idx_asset_status_histories_asset_created")
   @@map("asset_status_histories")
