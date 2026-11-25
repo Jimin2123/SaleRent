@@ -77,3 +77,13 @@ enum ProductStatus {
 
   @@map("product_status")
 }
+
+enum AssetStatus {
+  AVAILABLE // 대기
+  RENTED // 임대중
+  INSPECTING // 점검중
+  SOLD // 판매완료
+  DISPOSED // 폐기
+
+  @@map("asset_status")
+}

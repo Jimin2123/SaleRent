@@ -1,0 +1,27 @@
+// 실물 한 대 (SERIAL 품목 전용)
+model Asset {
+  id String @id @default(uuid()) @db.Uuid
+
+  serialNo String      @map("serial_no") @db.VarChar(100)
+  status   AssetStatus @default(AVAILABLE)
+
+  // 개별 기기의 실제 사양·상태 (업그레이드, 배터리 상태 등)
+  specs         Json?
+  purchasedAt   DateTime? @map("purchased_at") @db.Date
+  purchasePrice Int?      @map("purchase_price")
+  // purchasedFromPartnerId : 거래처(Partner) 도메인 작성 후 추가
+  memo          String?
+  createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt     DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  companyId String  @map("company_id") @db.Uuid
+  company   Company @relation(fields: [companyId], references: [id], onDelete: Restrict)
+  productId String  @map("product_id") @db.Uuid
+  product   Product @relation(fields: [productId, companyId], references: [id, companyId], onDelete: Restrict, onUpdate: Restrict, map: "fk_assets_product")
+
+  // 복합 FK 대상 (상태 이력이 같은 사업자의 자산만 가리키도록)
+  @@unique([id, companyId], map: "uk_assets_id_company")
+  @@unique([productId, serialNo], map: "uk_assets_product_serial")
+  @@index([companyId, status], map: "idx_assets_company_status")
+  @@map("assets")
+}

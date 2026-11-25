@@ -23,6 +23,7 @@ model Product {
   company    Company         @relation(fields: [companyId], references: [id], onDelete: Restrict)
   categoryId String          @map("category_id") @db.Uuid
   category   ProductCategory @relation(fields: [categoryId, companyId], references: [id, companyId], onDelete: Restrict, onUpdate: Restrict, map: "fk_products_category")
+  assets     Asset[]
 
   @@unique([companyId, code], map: "uk_products_company_code")
   @@unique([id, companyId], map: "uk_products_id_company")
