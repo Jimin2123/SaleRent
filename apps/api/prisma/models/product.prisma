@@ -25,6 +25,9 @@ model Product {
   category   ProductCategory @relation(fields: [categoryId, companyId], references: [id, companyId], onDelete: Restrict, onUpdate: Restrict, map: "fk_products_category")
   assets     Asset[]
 
+  inventoryStock InventoryStock?
+  stockMovements StockMovement[]
+
   @@unique([companyId, code], map: "uk_products_company_code")
   @@unique([id, companyId], map: "uk_products_id_company")
   @@index([companyId, categoryId], map: "idx_products_company_category")

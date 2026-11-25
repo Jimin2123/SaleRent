@@ -1,0 +1,14 @@
+// 현재 재고 수량 (QUANTITY 품목 전용). StockMovement 합계와 항상 같아야 함
+model InventoryStock {
+  productId String   @id @map("product_id") @db.Uuid
+  companyId String   @map("company_id") @db.Uuid
+  quantity  Int      @default(0)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  product Product @relation(fields: [productId, companyId], references: [id, companyId], onDelete: Restrict, onUpdate: Restrict, map: "fk_inventory_stocks_product")
+
+  // 1:1 복합 FK를 위해 Prisma가 요구하는 유니크 (productId가 이미 PK라 의미상 중복)
+  @@unique([productId, companyId], map: "uk_inventory_stocks_product_company")
+  @@index([companyId], map: "idx_inventory_stocks_company")
+  @@map("inventory_stocks")
+}

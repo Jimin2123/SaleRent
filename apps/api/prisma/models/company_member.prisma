@@ -15,6 +15,7 @@ model CompanyMember {
   createdAt            DateTime             @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt            DateTime             @updatedAt @map("updated_at") @db.Timestamptz(6)
   assetStatusHistories AssetStatusHistory[]
+  stockMovements       StockMovement[]
 
   // 복합 FK 대상 (이력·초대의 담당자가 같은 사업자 소속인지 보장)
   @@unique([id, companyId], map: "uk_company_members_id_company")

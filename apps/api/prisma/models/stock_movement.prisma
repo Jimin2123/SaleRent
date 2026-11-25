@@ -1,0 +1,24 @@
+// 재고 입출고 이력 (QUANTITY 품목 전용). 수정·삭제 없이 쌓기만 함
+model StockMovement {
+  id String @id @default(uuid()) @db.Uuid
+
+  // 입고 +, 출고 -
+  quantityDelta Int                 @map("quantity_delta")
+  reason        StockMovementReason
+  sourceType    HistorySourceType   @map("source_type")
+  sourceId      String?             @map("source_id") @db.Uuid
+  memo          String?             @db.VarChar(255)
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+
+  companyId     String        @map("company_id") @db.Uuid
+  productId     String        @map("product_id") @db.Uuid
+  product       Product       @relation(fields: [productId, companyId], references: [id, companyId], onDelete: Restrict, onUpdate: Restrict, map: "fk_stock_movements_product")
+  actorMemberId String        @map("actor_member_id") @db.Uuid
+  actorMember   CompanyMember @relation(fields: [actorMemberId, companyId], references: [id, companyId], onDelete: Restrict, onUpdate: Restrict, map: "fk_stock_movements_actor")
+
+  @@index([companyId, createdAt], map: "idx_stock_movements_company_created")
+  @@index([actorMemberId], map: "idx_stock_movements_actor")
+  @@index([productId, createdAt], map: "idx_stock_movements_product_created")
+  @@map("stock_movements")
+}

@@ -97,3 +97,13 @@ enum HistorySourceType {
 
   @@map("history_source_type")
 }
+
+enum StockMovementReason {
+  PURCHASE // 매입 입고 (+)
+  SALE // 판매 출고 (-)
+  SALE_RETURN // 판매 반품 (+)
+  DISPOSAL // 폐기 (-)
+  ADJUSTMENT // 실사 조정 (+/-)
+
+  @@map("stock_movement_reason")
+}
