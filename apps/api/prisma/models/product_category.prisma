@@ -1,0 +1,23 @@
+// 품목 분류 (대분류 > 중분류, 2단계)
+model ProductCategory {
+  id String @id @default(uuid()) @db.Uuid
+
+  name      String  @db.VarChar(50)
+  sortOrder Int     @default(0) @map("sort_order")
+  isActive  Boolean @default(true) @map("is_active")
+
+  createdAt DateTime @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt DateTime @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  companyId String            @map("company_id") @db.Uuid
+  company   Company           @relation(fields: [companyId], references: [id], onDelete: Restrict)
+  // null이면 대분류
+  parentId  String?           @map("parent_id") @db.Uuid
+  parent    ProductCategory?  @relation("CategoryTree", fields: [parentId, companyId], references: [id, companyId], onDelete: Restrict, onUpdate: Restrict, map: "fk_product_categories_parent")
+  children  ProductCategory[] @relation("CategoryTree")
+
+  // 복합 FK 대상 (같은 회사끼리만 참조하도록)
+  @@unique([id, companyId], map: "uk_product_categories_id_company")
+  @@index([companyId, parentId], map: "idx_product_categories_company_parent")
+  @@map("product_categories")
+}

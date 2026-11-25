@@ -13,7 +13,7 @@ model Company {
 
   zonecode      String  @db.VarChar(5) // 우편번호
   address       String  @db.VarChar(255) // 기본 주소
-  addressDetail String? @map("address_detail") @db.VarChar(255) // 상세 주소 
+  addressDetail String? @map("address_detail") @db.VarChar(255) // 상세 주소
   jibunAddress  String? @map("jibun_address") @db.VarChar(255) // 지번 주소
   roadAddress   String? @map("road_address") @db.VarChar(255) // 도로명 주소
   buildingName  String? @map("building_name") @db.VarChar(100) // 건물명
@@ -25,6 +25,7 @@ model Company {
 
   companyInvitations CompanyInvitation[]
   companyMembers     CompanyMember[]
+  productCategories  ProductCategory[]
 
   @@index([name], map: "idx_companies_name")
   @@index([businessRegistrationNo], map: "idx_companies_biz_reg_no")
