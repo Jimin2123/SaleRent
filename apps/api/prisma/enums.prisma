@@ -87,3 +87,13 @@ enum AssetStatus {
 
   @@map("asset_status")
 }
+
+enum HistorySourceType {
+  MANUAL // 화면에서 직접 (폐기, 점검 완료 등)
+  PURCHASE // 매입 입고
+  RENTAL_CONTRACT // 렌탈 계약 (출고, 반납, 교체, 인수)
+  SALES_ORDER // 판매 주문 (판매, 취소, 반품)
+  STOCK_COUNT // 재고 실사
+
+  @@map("history_source_type")
+}

@@ -14,10 +14,11 @@ model Asset {
   createdAt     DateTime  @default(now()) @map("created_at") @db.Timestamptz(6)
   updatedAt     DateTime  @updatedAt @map("updated_at") @db.Timestamptz(6)
 
-  companyId String  @map("company_id") @db.Uuid
-  company   Company @relation(fields: [companyId], references: [id], onDelete: Restrict)
-  productId String  @map("product_id") @db.Uuid
-  product   Product @relation(fields: [productId, companyId], references: [id, companyId], onDelete: Restrict, onUpdate: Restrict, map: "fk_assets_product")
+  companyId       String               @map("company_id") @db.Uuid
+  company         Company              @relation(fields: [companyId], references: [id], onDelete: Restrict)
+  productId       String               @map("product_id") @db.Uuid
+  product         Product              @relation(fields: [productId, companyId], references: [id, companyId], onDelete: Restrict, onUpdate: Restrict, map: "fk_assets_product")
+  statusHistories AssetStatusHistory[]
 
   // 복합 FK 대상 (상태 이력이 같은 사업자의 자산만 가리키도록)
   @@unique([id, companyId], map: "uk_assets_id_company")
