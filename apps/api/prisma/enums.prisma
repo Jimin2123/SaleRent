@@ -54,3 +54,56 @@ enum InvitationStatus {
 
   @@map("invitation_status")
 }
+
+enum ProductType {
+  EQUIPMENT // 장비
+  CONSUMABLE // 소모품·부품
+  SERVICE // 설치비·배송비 등 실물 없는 항목
+
+  @@map("product_type")
+}
+
+enum TrackingType {
+  SERIAL // 한 대씩 Asset으로 관리
+  QUANTITY // 수량(InventoryStock)으로 관리
+  NONE // 실물 없음 (SERVICE)
+
+  @@map("tracking_type")
+}
+
+enum ProductStatus {
+  ACTIVE
+  DISCONTINUED // 단종: 새 거래에서 선택 불가, 기존 데이터는 유지
+
+  @@map("product_status")
+}
+
+enum AssetStatus {
+  AVAILABLE // 대기
+  RENTED // 임대중
+  INSPECTING // 점검중
+  SOLD // 판매완료
+  DISPOSED // 폐기
+
+  @@map("asset_status")
+}
+
+enum HistorySourceType {
+  MANUAL // 화면에서 직접 (폐기, 점검 완료 등)
+  PURCHASE // 매입 입고
+  RENTAL_CONTRACT // 렌탈 계약 (출고, 반납, 교체, 인수)
+  SALES_ORDER // 판매 주문 (판매, 취소, 반품)
+  STOCK_COUNT // 재고 실사
+
+  @@map("history_source_type")
+}
+
+enum StockMovementReason {
+  PURCHASE // 매입 입고 (+)
+  SALE // 판매 출고 (-)
+  SALE_RETURN // 판매 반품 (+)
+  DISPOSAL // 폐기 (-)
+  ADJUSTMENT // 실사 조정 (+/-)
+
+  @@map("stock_movement_reason")
+}

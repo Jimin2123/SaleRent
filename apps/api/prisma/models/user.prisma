@@ -12,7 +12,7 @@ model User {
 
   accounts            Account[]
   memberships         CompanyMember[]
-  acceptedInvitations CompanyInvitation[] @relation("invitation_invited_by")
+  acceptedInvitations CompanyInvitation[] @relation("InvitationAcceptedBy")
 
   @@map("users")
 }

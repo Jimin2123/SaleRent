@@ -35,3 +35,13 @@ ALTER TABLE "company_invitations"
     OR
     ("status" <> 'ACCEPTED' AND "accepted_at" IS NULL AND "accepted_by_user_id" IS NULL)
   );
+
+-- 회사당 활성 OWNER는 한 명 (OWNER 위임은 기존 OWNER를 먼저 내려놓고 진행)
+CREATE UNIQUE INDEX "uk_company_members_active_owner"
+  ON "company_members" ("company_id")
+  WHERE "role" = 'OWNER' AND "status" = 'ACTIVE';
+
+-- 같은 사업자·같은 이메일로 대기 중인 초대는 하나만
+CREATE UNIQUE INDEX "uk_company_invitations_pending"
+  ON "company_invitations" ("company_id", "invitee_email")
+  WHERE "status" = 'PENDING';
