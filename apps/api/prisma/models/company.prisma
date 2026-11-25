@@ -26,6 +26,7 @@ model Company {
   companyInvitations CompanyInvitation[]
   companyMembers     CompanyMember[]
   productCategories  ProductCategory[]
+  products           Product[]
 
   @@index([name], map: "idx_companies_name")
   @@index([businessRegistrationNo], map: "idx_companies_biz_reg_no")

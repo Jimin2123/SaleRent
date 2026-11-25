@@ -54,3 +54,26 @@ enum InvitationStatus {
 
   @@map("invitation_status")
 }
+
+enum ProductType {
+  EQUIPMENT // 장비
+  CONSUMABLE // 소모품·부품
+  SERVICE // 설치비·배송비 등 실물 없는 항목
+
+  @@map("product_type")
+}
+
+enum TrackingType {
+  SERIAL // 한 대씩 Asset으로 관리
+  QUANTITY // 수량(InventoryStock)으로 관리
+  NONE // 실물 없음 (SERVICE)
+
+  @@map("tracking_type")
+}
+
+enum ProductStatus {
+  ACTIVE
+  DISCONTINUED // 단종: 새 거래에서 선택 불가, 기존 데이터는 유지
+
+  @@map("product_status")
+}

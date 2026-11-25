@@ -1,0 +1,31 @@
+// 품목 마스터 (무엇인가). 실물은 Asset 또는 InventoryStock
+model Product {
+  id String @id @default(uuid()) @db.Uuid
+
+  code String @db.VarChar(50)
+  name String @db.VarChar(100) // 제품명
+
+  spec         String?      @db.VarChar(255) // 규격·모델명·사양 (예: i5 / 16GB / 512GB)
+  productType  ProductType  @map("product_type")
+  trackingType TrackingType @map("tracking_type")
+
+  unit       String  @db.VarChar(20) // 단위 (대, 개, 박스, 회)
+  isRentable Boolean @default(false) @map("is_rentable")
+  isSellable Boolean @default(false) @map("is_sellable")
+
+  defaultSalePrice Int?          @map("default_sale_price") // 원 단위 정수
+  status           ProductStatus @default(ACTIVE)
+  memo             String?
+  createdAt        DateTime      @default(now()) @map("created_at") @db.Timestamptz(6)
+  updatedAt        DateTime      @updatedAt @map("updated_at") @db.Timestamptz(6)
+
+  companyId  String          @map("company_id") @db.Uuid
+  company    Company         @relation(fields: [companyId], references: [id], onDelete: Restrict)
+  categoryId String          @map("category_id") @db.Uuid
+  category   ProductCategory @relation(fields: [categoryId, companyId], references: [id, companyId], onDelete: Restrict, onUpdate: Restrict, map: "fk_products_category")
+
+  @@unique([companyId, code], map: "uk_products_company_code")
+  @@unique([id, companyId], map: "uk_products_id_company")
+  @@index([companyId, categoryId], map: "idx_products_company_category")
+  @@map("products")
+}
